@@ -1,0 +1,137 @@
+#root {
+  width: 1280px;
+  padding: 2rem;
+}
+
+.title{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+svg.watch{
+  width: 62px;
+  height: 62px;
+}
+.header{
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+}
+.header_infos{
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+}
+.name_input{
+  width: 150px;
+  height: 20px;
+  border-bottom: 1px solid #000;
+}
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
+.App {
+  width: 100%;
+  gap: 30px;
+  margin-bottom: 24px;
+}
+
+.score {
+  width: 100%;
+  padding-left: 32px;
+  margin-top: 3em;
+}
+
+.wrapper_operations {
+  display: flex;
+  flex-wrap: wrap;
+  width: 90%;
+  gap: 16px;
+}
+
+.separation{
+  border-right-color: #b5b5b5!important;
+}
+
+.wrapper_responses{
+  font-size: 20px;
+  display: flex;
+  flex-direction: row;
+  width: 10%;
+  gap: 16px;
+}
+
+.row{
+  display: flex;
+  width: 100%;
+  gap: 16px;
+  margin-top: 3em;
+}
+.col_responses{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.border{
+  border-right: 1px solid #000;
+  padding-right: 16px;
+
+}
+
+.column{
+ width: 45%;
+ display: flex;
+ flex-direction: column;
+ gap: 4px;
+ border-right: 1px solid #000;
+ padding-right: 16px;
+}
+
+.dashed {
+  border-right-style: dashed;
+}
+.index{
+  font-size: 16px;
+  width: 25px;
+}
+
+.calculation{
+  display: flex;
+  flex: 1;
+  justify-content: end;
+  font-size: 20px;
+  
+
+}
+.operator{
+  font-size: 20px;
+  width: 25px;
+}
+.result{
+  display: flex;
+  width: 50px;
+  height: 22px;
+  border-bottom: 1px solid rgb(83, 83, 83);
+}
+
+
+.calc{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.result-letter{
+  visibility: hidden;
+  border-bottom: 1px solid #000;
+}
