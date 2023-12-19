@@ -1,12 +1,113 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuid } from 'uuid';
 import "./App.css";
+
+enum TypeOperation {
+  TABLEMULTIPLICATION = "1",
+  COMPLEMENT10SUP = "2",
+  AJOUTNOMBREENTIER = "3",
+  COMPLEMENT100SUP = "4",
+  MULTIPLICATION10 = "5",
+  DOUBLENOMBREENTIER = "6",
+  QUOTIENTRESTE = "7"
+}
+
+type Operation = {
+  calc: string;
+  result: number;
+  type: TypeOperation;
+};
+
+function complement10Sup() {
+  //un nombre entier de 1 à 9
+  let number = Math.floor(Math.random() * 9) + 1;
+  //un dizaine entre 10 et 100
+  const baseNumber: number = Math.floor(Math.random() * 10) + 1; // Génère un nombre entre 1 et 10
+  const dizaine: number = baseNumber * 10; // Multiplie par 10 pour obtenir un multiple de 10
+
+  return { calc: dizaine - number + " pour aller à " + dizaine, result: number, type: TypeOperation.COMPLEMENT10SUP };
+}
+
+function quotientReste(){
+  //un nombre entier de 1 à 9
+  let multiplicateur1 = Math.floor(Math.random() * 9) + 1;
+  //un nombre entier de 1 à 9
+  let multiplicateur2 = Math.floor(Math.random() * 9) + 1;
+  let baseCalc = multiplicateur1 * multiplicateur2;
+  
+  //un nombre entier de 1 au plus petit des deux multiplicateurs
+  let number = Math.floor(Math.random() * Math.min(multiplicateur1, multiplicateur2)) + 1;
+  let number2 = baseCalc + number;
+
+  return { calc: number2 + " ÷ " + Math.max(multiplicateur1, multiplicateur2), result: Math.min(multiplicateur1, multiplicateur2), reste: number, type: TypeOperation.QUOTIENTRESTE };
+}
+
+function tableMultiplication() {
+  //un nombre entier de 1 à 9
+  let number = Math.floor(Math.random() * 10) + 1;
+  //un multiplicateur entre 1 et 10
+  let multiplicateur = Math.floor(Math.random() * 11) + 1;
+
+  return {
+    calc: number + " x " + multiplicateur,
+    result: number * multiplicateur,
+    type: TypeOperation.TABLEMULTIPLICATION,
+  };
+}
+
+function ajoutNombreEntier() {
+  //un nombre entier de 1 à 99
+  let number = Math.floor(Math.random() * 99) + 1;
+  //un dizaine entre 10 et 100
+  const baseNumber: number = Math.floor(Math.random() * 10) + 1; // Génère un nombre entre 1 et 10
+  const dizaine: number = baseNumber * 10; // Multiplie par 10 pour obtenir un multiple de 10
+  
+  return { calc: number + " + " + dizaine, result: number + dizaine, type: TypeOperation.AJOUTNOMBREENTIER };
+}
+
+function complement100Sup() {
+  //take a random hundred between 100 and 900 but never 0
+  const hundredNumber = Math.floor(Math.random() * 9 + 1) * 100;
+  //take a random number between 0 and 100
+  const complement = Math.floor(Math.random() * 100);
+
+  //calculate the complement
+  const baseNumber = hundredNumber - complement;
+  
+  return {calc: baseNumber , result: complement, type: TypeOperation.COMPLEMENT100SUP};
+}
+
+function multiplication10() {
+  // un nombre entier entre 1 et 99
+  let number = Math.floor(Math.random() * 99) + 1;
+  // un multiplicateur entre 10, 100 ou 1000
+  const possibleValues: number[] = [10, 100, 1000];
+  const multiplicateur: number = Math.floor(Math.random() * possibleValues.length);
+  
+  return {
+    calc: number + " x " + possibleValues[multiplicateur],
+    result: number * possibleValues[multiplicateur],
+    type: TypeOperation.MULTIPLICATION10,
+  };
+}
+
+function doubleNombreEntier() {
+  let number: number;
+  
+    do {
+        number = Math.floor(Math.random() * 19) + 1; // Génère un nombre entre 1 et 19
+        number *= 10; // Multiplie par 10 pour obtenir un multiple de 10
+    } while (number < 20 || number > 200);
+
+
+  return { calc: "le double de " + number + " est:", result: number * 2, type: TypeOperation.DOUBLENOMBREENTIER };
+}
 
 //function to return an array with 100 multiplication like
 //{calc: 1 * 1 , result: 1} each entries has to be unique, multiplicand from 0 to 9 multiplicator from 0 to 11
 // the calc has to be random and not follow each other (like 1*1, than 2*2)
 // the result has to be the result of the calc
-function createTable(length: number = 100) {
+function createTableDeMultiplication(length: number = 100) {
   let table = [];
   for (let i = 0; i < length; i++) {
     let calc = Math.floor(Math.random() * 10) + 1;
@@ -30,24 +131,108 @@ function createTable(length: number = 100) {
   return table;
 }
 
+
+const randomCalc = (howManyItems: number) => {
+  let newCalc: any[] = [];
+
+  for(let i = 0; i < howManyItems; i++) {
+    const randomIndex = Math.floor(Math.random() * Object.values(TypeOperation).length);
+    //suivant le type d'opération, on appelle la fonction correspondante
+    switch (randomIndex) {
+      case 0:
+        newCalc.push(tableMultiplication());
+        break;
+      case 1:
+        newCalc.push(complement10Sup());
+        break;
+      case 2:
+        newCalc.push(ajoutNombreEntier());
+        break;
+      case 3:
+        newCalc.push(complement100Sup());
+        break;
+      case 4:
+        newCalc.push(multiplication10());
+        break;
+      case 5:
+        newCalc.push(doubleNombreEntier());
+        break;
+      case 6:
+      newCalc.push(quotientReste());
+      break;
+      default:
+        break;
+    }
+
+  }
+console.log(newCalc);
+  return newCalc;
+}
+
+
 function App() {
-  const [calc, setCalc] = useState(createTable(100));
+  const [calc, setCalc] = useState<any[]>(randomCalc(50));
   const itemsPerColumn = 25;
   const columnsPerRow = 2;
 
   const numRows = Math.ceil(calc.length / (columnsPerRow * itemsPerColumn));
 
+
   //function to render a single calc item
   function renderCalc(item: any, index: number, startIndex: number) {
     return (
-      <div key={'calc_'+index} className="calc">
+      <div key={uuid()} className="calc">
         <div className="index">{startIndex + index + 1}.</div>
         <div className="calculation" key={uuid()}>{item.calc}</div>
-        <div className="operator">=</div>
+        <div className="wrapper_result">
+          <div className="operator">=</div>
+          <div className="result"></div>
 
-        <div className="result"></div>
+        </div>
       </div>
     );
+  }
+
+  function renderComplement100Sup(item: any, index: number, startIndex: number) {
+    return (
+      <div key={uuid()} className="calc">
+        <div className="index">{startIndex + index + 1}.</div>
+        <div className="calculation" key={uuid()}>{item.calc} + <span className="result"></span></div> 
+        <div className="wrapper_result">
+          <div className="operator">=</div>
+          <div className="result_complement_to_100">{item.calc + item.result}</div>
+
+        </div>
+
+      </div>
+    );
+  }
+
+  function renderQuotienReste (item: any, index: number, startIndex: number) {
+    return (
+      <div key={uuid()} className="calc">
+        <div className="index">{startIndex + index + 1}.</div>
+        <div className="calculation" key={uuid()}>{item.calc}</div>
+        <div className="wrapper_result">
+          <div className="operator">=</div>
+          <div className="Calc_Quotient_Reste">
+            <div className="quotient"><span>q:</span><span className="result_QR"></span></div>
+            <div className="reste"><span>r:</span><span className="result_QR"></span></div>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  function renderResultQuotientReste(item: any, index: number, startIndex: number) {
+    return (
+      console.log(item),
+        <div className="response_Quotient_Reste" key={uuid()}>
+          <div className="calc_quotient"><span>q:</span>{item.result}</div>
+          <div className="calc_reste"><span>r:</span>{item.reste}</div>
+        </div>
+    )
   }
 
   function renderResponse(
@@ -60,7 +245,9 @@ function App() {
     return (
       <div className={classResponse}>
         {calc.slice(startIndex, endIndex).map((item: any, index: number) => (
-          <div key={index + "_resp"}>{item.result}</div>
+          item.type === TypeOperation.QUOTIENTRESTE ?
+          renderResultQuotientReste(item, index, startIndex)
+          : <div key={uuid()}>{item.result}</div>
         ))}
       </div>
     );
@@ -74,7 +261,11 @@ function App() {
           {calc
             .slice(startIndex, endIndex)
             .map((item: any, index: number) =>
-              renderCalc(item, index, startIndex)
+              item.type === TypeOperation.COMPLEMENT100SUP ?
+                  renderComplement100Sup(item, index, startIndex)
+                : item.type === TypeOperation.QUOTIENTRESTE ?
+                renderQuotienReste(item, index, startIndex)
+                : renderCalc(item, index, startIndex)
             )}
         </div>
       </>
@@ -404,7 +595,7 @@ function App() {
         </svg>
         <h1>Défi: {calc.length} calculs en 5 minutes</h1>
       </div>
-      <div className="App">
+      <div className="App" key={uuid()}>
         {render()}
         {renderEvaluation()}
       </div>

@@ -53,7 +53,6 @@ svg.watch{
 .wrapper_operations {
   display: flex;
   flex-wrap: wrap;
-  width: 90%;
   gap: 16px;
 }
 
@@ -65,7 +64,6 @@ svg.watch{
   font-size: 20px;
   display: flex;
   flex-direction: row;
-  width: 10%;
   gap: 16px;
 }
 
@@ -94,6 +92,7 @@ svg.watch{
  gap: 4px;
  border-right: 1px solid #000;
  padding-right: 16px;
+ flex: 1 1 auto;
 }
 
 .dashed {
@@ -106,7 +105,7 @@ svg.watch{
 
 .calculation{
   display: flex;
-  flex: 1;
+  flex: 1 1 100%;
   justify-content: end;
   font-size: 20px;
   
@@ -123,6 +122,45 @@ svg.watch{
   border-bottom: 1px solid rgb(83, 83, 83);
 }
 
+.result_QR{
+  display: flex;
+  width: 30px;
+  height: 22px;
+  border-bottom: 1px solid rgb(83, 83, 83);
+
+}
+
+.result_complement_to_100{
+  display: flex;
+  width: 50px;
+  height: 22px;
+  font-size: 20px;
+}
+
+.Calc_Quotient_Reste{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 22px;
+}
+
+.response_Quotient_Reste{
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.quotient{
+  display: flex;
+}
+
+.reste{
+  display: flex;
+}
+
+.wrapper_result{
+  display: flex;
+}
 
 .calc{
   display: flex;

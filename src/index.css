@@ -55,6 +55,14 @@ button:focus-visible {
     font-size: 12pt;
   }
 
+  .wrapper_responses,.calculation, .index, .operator, .result_complement_to_100{
+    font-size: 14px;
+  }
+
+  .col_responses{
+    justify-content: space-between;
+  }
+
   .pagebreak{
     clear: both;
     page-break-after: always;
